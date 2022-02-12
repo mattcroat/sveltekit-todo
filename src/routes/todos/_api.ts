@@ -1,5 +1,8 @@
 let todos: Todo[] = []
 
+// this is gross, _api should be refactored
+// https://github.com/sveltejs/kit/blob/master/packages/create-svelte/templates/default/src/routes/todos/_api.ts
+
 // https://developer.mozilla.org/en-US/docs/Web/API/Request
 export function api(
 	request: Request,
