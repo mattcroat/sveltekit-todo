@@ -39,7 +39,12 @@
 <div class="todos">
 	<h1>{title}</h1>
 
-	<form action="/todos.json" method="post" class="new">
+	<form
+		action="/todos.json"
+		method="post"
+		class="new"
+		autocomplete="off"
+	>
 		<input
 			type="text"
 			name="text"
