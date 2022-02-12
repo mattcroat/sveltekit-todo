@@ -11,8 +11,12 @@
 		/>
 	</form>
 
-	<form action="" method="" class="text">
-		<input type="text" value={todo.text} />
+	<form
+		action="/todos/{todo.uid}.json?_method=patch"
+		method="post"
+		class="text"
+	>
+		<input name="text" type="text" value={todo.text} />
 		<button aria-label="Save todo" class="save" />
 	</form>
 

@@ -7,3 +7,12 @@ export const del: RequestHandler = ({
 }) => {
 	return api(request, null, params)
 }
+
+export const patch: RequestHandler = async ({
+	request,
+	params
+}) => {
+	const form = await request.formData()
+	const text = form.get('text') as string
+	return api(request, { text }, params)
+}
