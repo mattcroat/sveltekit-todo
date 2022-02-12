@@ -14,5 +14,8 @@ export const patch: RequestHandler = async ({
 }) => {
 	const form = await request.formData()
 	const text = form.get('text') as string
-	return api(request, { text }, params)
+	const done = form.has('done')
+		? !!form.get('done')
+		: undefined
+	return api(request, { text, done }, params)
 }
