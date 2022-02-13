@@ -20,7 +20,7 @@ export function api(
 		case 'POST':
 			todos.push(data as Todo)
 			body = data
-			body = 201
+			status = 201
 			break
 		case 'DELETE':
 			todos = todos.filter(
@@ -41,13 +41,20 @@ export function api(
 				return todo
 			})
 			status = 200
+			body = todos.find((todo) => todo.uid === params.uid)
 			break
 		default:
 			break
 	}
 
-	if (request.method !== 'GET') {
-		/* avoid form redirect */
+	// we need to differentiate who made the request
+	// browser does "GET" and "POST" and rest we redirect
+	// but for JavaScript we send a special "accept" header
+	if (
+		request.method !== 'GET' &&
+		request.headers.get('accept') !== 'application/json'
+	) {
+		// avoid form redirect
 		return {
 			status: 303,
 			headers: {
