@@ -8,11 +8,6 @@ export const get: RequestHandler = ({ request }) => {
 export const post: RequestHandler = async ({ request }) => {
 	const form = await request.formData()
 	const text = form.get('text') as string
-	const todo = {
-		uid: Date.now().toString(),
-		created_at: new Date(),
-		text,
-		done: false
-	}
+	const todo = { text, done: false }
 	return api(request, todo)
 }
