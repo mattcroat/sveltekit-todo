@@ -1,10 +1,12 @@
-let todos: Todo[] = []
+import PrismaClient from '$lib/prisma'
+
+const prisma = new PrismaClient()
 
 // this is gross, _api should be refactored
 // https://github.com/sveltejs/kit/blob/master/packages/create-svelte/templates/default/src/routes/todos/_api.ts
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Request
-export function api(
+export async function api(
 	request: Request,
 	data?: Record<string, unknown>,
 	params?: Record<string, string>
@@ -14,34 +16,30 @@ export function api(
 
 	switch (request.method) {
 		case 'GET':
-			body = todos
+			body = await prisma.todo.findMany()
 			status = 200
 			break
 		case 'POST':
-			todos.push(data as Todo)
-			body = data
+			body = await prisma.todo.create({
+				data: {
+					text: data.text as string,
+					done: data.done as boolean
+				}
+			})
 			status = 201
 			break
 		case 'DELETE':
-			todos = todos.filter(
-				(todo) => todo.uid !== params.uid
-			)
+			body = await prisma.todo.delete({
+				where: { uid: params.uid }
+			})
 			status = 200
 			break
 		case 'PATCH':
-			todos = todos.map((todo) => {
-				if (todo.uid === params.uid) {
-					if (data.text) {
-						todo.text = data.text as string
-					}
-					if (!data.text) {
-						todo.done = data.done as boolean
-					}
-				}
-				return todo
+			body = await prisma.todo.update({
+				where: { uid: params.uid },
+				data: { text: data.text, done: data.done }
 			})
 			status = 200
-			body = todos.find((todo) => todo.uid === params.uid)
 			break
 		default:
 			break
