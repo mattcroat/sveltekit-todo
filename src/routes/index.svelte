@@ -39,6 +39,13 @@
 		form.reset()
 	}
 
+	async function processDeletedTodoResult(
+		response: Response
+	) {
+		const { uid } = await response.json()
+		todos = todos.filter((todo) => todo.uid !== uid)
+	}
+
 	async function processUpdatedTodoResult(
 		response: Response
 	) {
@@ -77,9 +84,7 @@
 	{#each todos as todo}
 		<TodoItem
 			{todo}
-			processDeletedTodoResult={() => {
-				todos = todos.filter((t) => t.uid !== todo.uid)
-			}}
+			{processDeletedTodoResult}
 			{processUpdatedTodoResult}
 		/>
 	{/each}
